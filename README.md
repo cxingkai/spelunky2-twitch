@@ -38,7 +38,7 @@ You can use this mod for your Spelunky 2 stream, but be warned: there are quite 
 
 ## Mod setup
 1. Install Modlunky if you haven't done so yet.
-2. Copy the `Spelunky Twitch Integration` folder into `Spelunky 2\Mods\Packs`. You should see it show up in Modlunky.
+2. Copy the entire folder into `Spelunky 2\Mods\Packs`. You should see it show up in Modlunky.
 3. Create a reward for your channel called `the magic button`. For details on how to change this, check the "How to edit" section below.
 
 And we are finally done with the setup!
@@ -52,4 +52,4 @@ And we are finally done with the setup!
 6. When stopping your stream, press Ctrl + C on both terminal windows.
 
 ## How to edit
-You may not want to have "the magic button" as the reward, but you can change it to something else. But before that, open `Spelunky Twitch Integration\Data\parse.lua`. Search for `if MSG == "the magic button"` and replace `the magic button` with whatever your reward is called.
+You may not want to have "the magic button" as the reward, but you can change it to something else. But before that, open `Data\parse.lua`. Search for `if MSG == "the magic button"` and replace `the magic button` with whatever your reward is called.
