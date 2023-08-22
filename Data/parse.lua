@@ -5,6 +5,20 @@ math.random()
 math.random()
 math.random()
 
+local A1, A2 = 727595, 798405  -- 5^17=D20*A1+A2
+local D20, D40 = 1048576, 1099511627776  -- 2^20, 2^40
+local X1, X2 = 0, 1
+function rand(max)
+    local U = X2*A2
+    local V = (X1*A2 + X2*A1) % D20
+    V = (V*D20 + U) % D40
+    X1 = math.floor(V/D20)
+    X2 = V - X1*D20
+	local r = V/D40
+    return math.floor(r*max) + 1
+end
+
+
 white = Color:white()
 black = Color:black()
 ltgray = Color:new(0.45, 0.45, 0.45, 1)
@@ -43,8 +57,6 @@ cb_explosion_id = -1
 tier1Events = {
 	{"EXPLOSION", "Explosions are larger for 30 seconds!", function()
 			local x, y, l = get_position(players[1].uid)
-			
-			spawn(ENT_TYPE.ITEM_POWERPACK, x, y, l, 0, 0)
 
 			-- enlarge the hitboxes of the explosion entities, which increases the destruction radius
 			set_post_entity_spawn(function(ent)
@@ -89,9 +101,17 @@ tier1Events = {
 		if sound ~= nil then sound:play() end
 		
 		local x, y, l = get_position(players[1].uid)
+		local direction = math.random(1,4)
 		
-		local gx1, gy1, gx2, gy2 = get_bounds()
-		spawn(ENT_TYPE.MONS_GHOST, x, math.max(y-12, gy2-4), l, 0, 0)
+		if direction == 1 then
+			spawn(ENT_TYPE.MONS_GHOST, x+20, y, l, 0, 0)
+		elseif direction == 2 then
+			spawn(ENT_TYPE.MONS_GHOST, x-20, y, l, 0, 0)
+		elseif direction == 3 then
+			spawn(ENT_TYPE.MONS_GHOST, x, y+20, l, 0, 0)
+		else
+			spawn(ENT_TYPE.MONS_GHOST, x, y-20, l, 0, 0)
+		end
 		
 	end},
 	{"JELLY", "Free royal jelly!", function()
@@ -408,8 +428,8 @@ tier1Events = {
 
 function module.parse_chat(NAME, MSG)
 	if MSG == "the magic button" then
-		-- local event = tier1Events[math.random(1, #tier1Events)]
-		event = tier1Events[26]
+		local event = tier1Events[rand(#tier1Events)]
+		-- event = tier1Events[26]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
