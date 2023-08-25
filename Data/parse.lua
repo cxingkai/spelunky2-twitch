@@ -55,6 +55,7 @@ announcementText = ""
 cb_explosion_id = -1
 
 tier1Events = {
+	-- 1
 	{"EXPLOSION", "Explosions are larger for 30 seconds!", function()
 			local x, y, l = get_position(players[1].uid)
 
@@ -87,6 +88,7 @@ tier1Events = {
 				cb_explosion_id = -1
 			end, 15*60)
 	end },
+	-- 2
 	{"PUNISHMENT", "Kali punishes you with a ball and chain!", function()
 	
 		attach_ball_and_chain(players[1].uid, 0, 0)
@@ -95,6 +97,7 @@ tier1Events = {
 		generate_particles(PARTICLEEMITTER.LARGEITEMDUST, players[1].uid)
 	
 	end},
+	-- 3
 	{"GHOST", "The ghost has been summoned!", function()
 		
 		local sound = get_sound(VANILLA_SOUND.PLAYER_PGHOST_SHAKE)
@@ -114,6 +117,7 @@ tier1Events = {
 		end
 		
 	end},
+	-- 4
 	{"JELLY", "Free royal jelly!", function()
 		
 		local x, y, l = get_position(players[1].uid)
@@ -121,11 +125,13 @@ tier1Events = {
 		spawn(ENT_TYPE.ITEM_PICKUP_ROYALJELLY, x, y, l, 0, 0)
 		
 	end},
+	-- 5
 	{"JETPACK", "Free jetpack!", function()
 		local x, y, l = get_position(players[1].uid)
 		
 		spawn(ENT_TYPE.ITEM_JETPACK, x, y, l, 0, 0)
 	end},
+	-- 6
 	{"JETPACK?", "Free jetpack... and bombs :)", function()
 		
 		local x, y, l = get_position(players[1].uid)
@@ -137,6 +143,7 @@ tier1Events = {
 		spawn(ENT_TYPE.ITEM_BOMB, x+0.5, y, l, 0, 0)
 		spawn(ENT_TYPE.ITEM_BOMB, x+1, y, l, 0, 0)
 	end},
+	-- 7
 	{"ANKH", "Ankh will be toggled on/off!", function()
 		
 		local sound = get_sound(VANILLA_SOUND.ITEMS_CLONE_GUN)
@@ -148,6 +155,7 @@ tier1Events = {
 			players[1]:remove_powerup(ENT_TYPE.ITEM_POWERUP_ANKH)
 		end
 	end},
+	-- 8
 	{"WITCH DOCTOR CONFERENCE", "All enemies have been turned into witch doctors!", function()
 		local monster_ents = get_entities_by_type(enemies)
 
@@ -158,6 +166,7 @@ tier1Events = {
 			generate_particles(PARTICLEEMITTER.LARGEITEMDUST, wd)	
 		end
 	end},
+	-- 9
 	{"RAIN OF ARROWS", "Arrows will rain down for 30 seconds!", function()
 		-- give one second before all hell breaks loose
 		set_timeout(function()
@@ -177,6 +186,7 @@ tier1Events = {
 			end, 3 * 60)
 		end, 60)
 	end},
+	-- 10
 	{"INDEPENDENCE DAY", "All enemies have been turned into UFOs!", function()
 		local monster_ents = get_entities_by_type(enemies)
 
@@ -187,6 +197,7 @@ tier1Events = {
 			generate_particles(PARTICLEEMITTER.LARGEITEMDUST, wd)	
 		end
 	end},
+	-- 11
 	{"THE BOYS", "You got yourself a gang!", function()
 		local x, y, l = get_position(players[1].uid)
 		spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x+0.2, y, l)
@@ -199,6 +210,7 @@ tier1Events = {
 		
 		generate_particles(PARTICLEEMITTER.COFFINDOORPOOF_SPARKS, players[1].uid)
 	end},
+	-- 12
 	{"ITS JOEVER", "The boys brought gifts!", function()
 		local x, y, l = get_position(players[1].uid)
 		local boy1 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x+0.2, y, l)
@@ -216,6 +228,7 @@ tier1Events = {
 		spawn_entity_over(ENT_TYPE.ITEM_BOMB, boy3, 0, 0)
 		spawn_entity_over(ENT_TYPE.ITEM_BOMB, boy4, 0, 0)
 	end},
+	-- 13
 	{"SLAP", "You got slapped! Don't worry, this won't kill you!", function()
 		players[1].health = math.max(players[1].health - 1, 1)
 		players[1].stun_timer = 60
@@ -234,11 +247,13 @@ tier1Events = {
 		if sound ~= nil then sound:play() end
 		
 	end},
+	-- 14
 	{"FOOD", "Free food!", function()
 		local x, y, l = get_position(players[1].uid)
 		
 		spawn(ENT_TYPE.ITEM_PICKUP_COOKEDTURKEY, x, y, l, 0, 0)
 	end},
+	-- 15
 	{"DARKNESS", "Level is now dark!", function()
 		if state.illumination ~= nil then
 			set_interval(function()
@@ -259,6 +274,7 @@ tier1Events = {
 		local sound = get_sound(VANILLA_SOUND.SHARED_DARK_LEVEL_START)
 		if sound ~= nil then sound:play() end
 	end},
+	-- 16
 	{"TEMPLE", "I hope you like temple levels!", function()
 		
 		local floors = get_entities_by(0, MASK.FLOOR | MASK.ACTIVEFLOOR, LAYER.FRONT)
@@ -278,6 +294,7 @@ tier1Events = {
 			floorsToChange = floorsToChange - 1
 		end	
 	end},
+	-- 17
 	{"SUNKEN CITY", "Regenerating blocks galore!", function()
 		
 		local floors = get_entities_by(0, MASK.FLOOR | MASK.ACTIVEFLOOR, LAYER.FRONT)
@@ -297,6 +314,7 @@ tier1Events = {
 			floorsToChange = floorsToChange - 1
 		end	
 	end},
+	-- 18
 	{"KING", "Triple crown!", function()
 		
 		local sound = get_sound(VANILLA_SOUND.ITEMS_CLONE_GUN)
@@ -314,6 +332,7 @@ tier1Events = {
 			players[1]:give_powerup(ENT_TYPE.ITEM_POWERUP_TRUECROWN)
 		end
 	end},
+	-- 19
 	{"FARTBOMB", "You fart out bombs for 30 seconds!", function()
 		-- give one second before all hell breaks loose
 		set_timeout(function()
@@ -335,6 +354,7 @@ tier1Events = {
 			end, 2 * 60)
 		end, 60)
 	end},
+	-- 20
 	{"MINIBOSS", "Watch out! Miniboss incoming!", function()
 		local x, y, l = get_position(players[1].uid)
 
@@ -344,6 +364,7 @@ tier1Events = {
 			generate_particles(PARTICLEEMITTER.LARGEITEMDUST, miniboss)
 		end, 60)
 	end},
+	-- 21
 	{"EGGPLANT", "Eat your vegetables!", function()
 		local sound = get_sound(VANILLA_SOUND.ITEMS_CLONE_GUN)
 		if sound ~= nil then sound:play() end
@@ -351,6 +372,7 @@ tier1Events = {
 		local x, y, l = get_position(players[1].uid)
 		spawn(ENT_TYPE.ITEM_EGGPLANT, x, y, l, 0, 0)
 	end},
+	-- 22
 	{"SQUID GAMES", "The cosmic jelly has been summoned!", function()
 		local sound = get_sound(VANILLA_SOUND.SHARED_COSMIC_ORB_DESTROY)
 		if sound ~= nil then sound:play() end
@@ -368,6 +390,7 @@ tier1Events = {
 			spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x, y-20, l, 0, 0)
 		end
 	end},
+	-- 23
 	{"LAVA", "Lava pool incoming!", function()
 		local x, y, l = get_position(players[1].uid)
 		local lava_left = 16
@@ -384,6 +407,7 @@ tier1Events = {
 			end, 15)
 		end, 60)
 	end},
+	-- 24
 	{"WATER", "Who doesn't like water levels?", function()
 		local x, y, l = get_position(players[1].uid)
 		local water_left = 50
@@ -400,6 +424,7 @@ tier1Events = {
 			end, 15)
 		end, 60)
 	end},
+	-- 25
 	{"ICE CREAM", "Bing Qilin!", function()
 		local sound = get_sound(VANILLA_SOUND.ITEMS_CLONE_GUN)
 		if sound ~= nil then sound:play() end
@@ -407,6 +432,7 @@ tier1Events = {
 		local x, y, l = get_position(players[1].uid)
 		spawn(ENT_TYPE.MOUNT_QILIN, x, y, l, 0, 0)
 	end},
+	-- 26
 	{"SHIELD WALL", "The boys brought shields!", function()
 		local x, y, l = get_position(players[1].uid)
 		local boy1 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x+0.2, y, l)
@@ -423,13 +449,53 @@ tier1Events = {
 		pick_up(boy2, spawn(ENT_TYPE.ITEM_METAL_SHIELD, 0, 0, l, 0, 0))
 		pick_up(boy3, spawn(ENT_TYPE.ITEM_METAL_SHIELD, 0, 0, l, 0, 0))
 		pick_up(boy4, spawn(ENT_TYPE.ITEM_METAL_SHIELD, 0, 0, l, 0, 0))
+	end},
+	-- 27
+	{"YANG", "Free turkey... and Yang!", function()
+		local x, y, l = get_position(players[1].uid)
+
+		-- wait one second before all hell breaks loose
+		set_timeout(function() 
+			spawn_roomowner(ENT_TYPE.MONS_YANG, x, y, l, ROOM_TEMPLATE.SHOP)
+			spawn_on_floor(ENT_TYPE.ITEM_PICKUP_COOKEDTURKEY, x-1, y, l)
+		end, 60)
 	end}
+	--28
+	-- {"SHOPKEEP", "Malding shopkeeper coming for you!", function()
+		-- local x, y, l = get_position(players[1].uid)
+
+		-- wait one second before all hell breaks loose
+		-- set_timeout(function() 
+			-- local shopkeeper = spawn_roomowner(ENT_TYPE.MONS_SHOPKEEPER, x, y, l, ROOM_TEMPLATE.WADDLER)
+			-- local generic = spawn(ENT_TYPE.ITEM_BOMB, x+1, y, l, 0, 0)
+			-- add_item_to_shop(generic, shopkeeper)
+			-- kill_entity(get_grid_entity_at(x+1, y-1, l))
+		-- end, 60)
+	-- end}
+	-- doesn't work sadge
+	-- {"AMOGUS", "Someone is sus!", function()
+	-- 	local x, y, l = get_position(players[1].uid)
+	-- 	local boy1 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x+0.2, y, l)
+	-- 	local boy2 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x-0.2, y, l)
+	-- 	local boy3 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x+0.1, y, l)
+	-- 	local boy4 = spawn_companion(ENT_TYPE.CHAR_HIREDHAND, x-0.1, y, l)
+	-- 	local boys = {boy1, boy2, boy3, boy4}
+		
+	-- 	local sound = get_sound(VANILLA_SOUND.SHARED_COFFIN_BREAK)
+	-- 	if sound ~= nil then sound:play() end
+
+	-- 	generate_particles(PARTICLEEMITTER.COFFINDOORPOOF_SPARKS, players[1].uid)
+
+	-- 	local i = rand(4)
+	-- 	local challenger = get_entity(boys[i])
+	-- 	challenger.more_flags = set_flag(challenger.more_flags, 2)
+	-- end}
 }
 
 function module.parse_chat(NAME, MSG)
 	if MSG == "the magic button" then
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[26]
+		-- event = tier1Events[28]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
