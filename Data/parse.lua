@@ -53,6 +53,7 @@ local enemies_miniboss = {ENT_TYPE.MONS_CAVEMAN_BOSS, ENT_TYPE.MONS_ANUBIS,
 announcementText = ""
 
 cb_explosion_id = -1
+local spiderlunkyDuration = -1
 
 tier1Events = {
 	-- 1
@@ -459,19 +460,66 @@ tier1Events = {
 			spawn_roomowner(ENT_TYPE.MONS_YANG, x, y, l, ROOM_TEMPLATE.SHOP)
 			spawn_on_floor(ENT_TYPE.ITEM_PICKUP_COOKEDTURKEY, x-1, y, l)
 		end, 60)
-	end}
+	end},
 	--28
-	-- {"SHOPKEEP", "Malding shopkeeper coming for you!", function()
-		-- local x, y, l = get_position(players[1].uid)
+	{"SPIDERLUNKY", "With great power comes great responsibilunky!", function()
+		if spiderlunkyDuration == -1 then
+			spiderlunkyDuration = 30 * 60
+		else
+			spiderlunkyDuration = spiderlunkyDuration + 30 * 60
+			return
+		end
+
+		set_pre_entity_spawn(function(entity_type, x, y, layer, overlay, spawn_flags)
+			if spiderlunkyDuration <= 0 then
+				return
+			end
+
+			local facingleft = 1
+			if test_flag(players[1].flags, ENT_FLAG.FACING_LEFT) then
+				facingleft = -1
+			else
+				facingleft = 1
+			end
+
+			local x, y, l = get_position(players[1].uid)
+			local uid = spawn_entity(ENT_TYPE.ITEM_WEBSHOT, x, y, l, 0, 0)
+			local ent = get_entity(uid)
+			ent.user_data = { whip = true }
+			players[1]:pick_up(ent) 
+
+			if (facingleft == 1) then
+				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x-.53, y, l, 50*facingleft, .08)
+			else
+				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x+.53, y, l, 50*facingleft, .08)
+			end
+		end, SPAWN_TYPE.ANY, MASK.ITEM, ENT_TYPE.ITEM_WHIP)
+
+		set_callback(function()
+			if spiderlunkyDuration <= 0 then
+				return
+			end
+
+			local player = get_player(1, false)
+			if player then
+				local held_ent = player:get_held_entity()
+				if held_ent and held_ent.type.id == ENT_TYPE.ITEM_WEBSHOT and held_ent.user_data and held_ent.user_data.whip then
+					player:drop(held_ent)
+					held_ent:destroy()
+				end
+			end
+			spiderlunkyDuration = spiderlunkyDuration - 1
+		end, ON.GAMEFRAME)
+	end},
+	-- 29
+	{"SHOPKEEP", "Malding shopkeeper coming for you!", function()
+		local x, y, l = get_position(players[1].uid)
 
 		-- wait one second before all hell breaks loose
-		-- set_timeout(function() 
-			-- local shopkeeper = spawn_roomowner(ENT_TYPE.MONS_SHOPKEEPER, x, y, l, ROOM_TEMPLATE.WADDLER)
-			-- local generic = spawn(ENT_TYPE.ITEM_BOMB, x+1, y, l, 0, 0)
-			-- add_item_to_shop(generic, shopkeeper)
-			-- kill_entity(get_grid_entity_at(x+1, y-1, l))
-		-- end, 60)
-	-- end}
+		set_timeout(function()
+			spawn(ENT_TYPE.MONS_SHOPKEEPERCLONE, x, y, l, 0, 0)
+		end, 60)
+	end}
 	-- doesn't work sadge
 	-- {"AMOGUS", "Someone is sus!", function()
 	-- 	local x, y, l = get_position(players[1].uid)
@@ -495,7 +543,7 @@ tier1Events = {
 function module.parse_chat(NAME, MSG)
 	if MSG == "the magic button" then
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[28]
+		-- event = tier1Events[29]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
