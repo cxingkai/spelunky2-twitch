@@ -54,6 +54,7 @@ announcementText = ""
 
 cb_explosion_id = -1
 local spiderlunkyDuration = -1
+local touristDuration = -1
 
 tier1Events = {
 	-- 1
@@ -519,6 +520,51 @@ tier1Events = {
 		set_timeout(function()
 			spawn(ENT_TYPE.MONS_SHOPKEEPERCLONE, x, y, l, 0, 0)
 		end, 60)
+	end},
+	-- 30
+	{"TOURIST", "Snap me some good pictures!", function()
+		if touristDuration == -1 then
+			touristDuration = 30 * 60
+		else
+			touristDuration = touristDuration + 30 * 60
+			return
+		end
+
+		set_callback(function()
+			if touristDuration <= 0 then
+				-- destroy camera
+				local player = get_player(1, false)
+				if player then 
+					local held_ent = player:get_held_entity()
+					if held_ent and held_ent.type.id == ENT_TYPE.ITEM_CAMERA then
+						player:drop(held_ent)
+						held_ent:destroy()
+					end
+				end
+				return
+			end
+
+			touristDuration = touristDuration - 1
+
+			local player = get_player(1, false)
+			if player then
+				local held_ent = player:get_held_entity()
+				if held_ent then
+					if held_ent.type.id == ENT_TYPE.ITEM_CAMERA then
+						return
+					end
+					player:drop(held_ent)
+				end
+
+				local cameras = get_entities_by(ENT_TYPE.ITEM_CAMERA, 0, LAYER.BOTH)
+				if #cameras > 0 then
+					player:pick_up(get_entity(cameras[1])) 
+				else
+					local x, y, l = get_position(players[1].uid)
+					player:pick_up(get_entity(spawn_entity(ENT_TYPE.ITEM_CAMERA, x, y, l, 0, 0)))
+				end
+			end
+		end, ON.GAMEFRAME)
 	end}
 	-- doesn't work sadge
 	-- {"AMOGUS", "Someone is sus!", function()
@@ -543,7 +589,7 @@ tier1Events = {
 function module.parse_chat(NAME, MSG)
 	if MSG == "the magic button" then
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[29]
+		-- event = tier1Events[30]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
