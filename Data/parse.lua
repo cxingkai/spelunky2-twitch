@@ -55,6 +55,7 @@ announcementText = ""
 cb_explosion_id = -1
 local spiderlunkyDuration = -1
 local touristDuration = -1
+local disableCameraAfterTourist = false
 
 tier1Events = {
 	-- 1
@@ -523,16 +524,22 @@ tier1Events = {
 	end},
 	-- 30
 	{"TOURIST", "Snap me some good pictures!", function()
+		disableCameraAfterTourist = true
 		if touristDuration == -1 then
 			touristDuration = 30 * 60
 		else
 			touristDuration = touristDuration + 30 * 60
 			return
 		end
-
+		
 		set_callback(function()
+			if disableCameraAfterTourist == false then
+				return
+			end
+
 			if touristDuration <= 0 then
 				-- destroy camera
+				disableCameraAfterTourist = false
 				local player = get_player(1, false)
 				if player then 
 					local held_ent = player:get_held_entity()
