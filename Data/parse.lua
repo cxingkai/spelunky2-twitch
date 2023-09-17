@@ -595,6 +595,13 @@ tier1Events = {
 
 function module.parse_chat(NAME, MSG)
 	if MSG == "the magic button" then
+		local player = get_player(1, false)
+		if player then
+			-- do nothing
+		else
+			-- probably in transition from stage 6 to 7, which can crash game, so don't allow events
+			return
+		end
 		local event = tier1Events[rand(#tier1Events)]
 		-- event = tier1Events[30]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
