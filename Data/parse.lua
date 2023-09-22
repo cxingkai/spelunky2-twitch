@@ -59,7 +59,7 @@ local disableCameraAfterTourist = false
 
 tier1Events = {
 	-- 1
-	{"EXPLOSION", "Explosions are larger for 30 seconds!", function()
+	{"EXPLOSION", "One minute of huge explosions!", function()
 			local x, y, l = get_position(players[1].uid)
 
 			-- enlarge the hitboxes of the explosion entities, which increases the destruction radius
@@ -89,7 +89,7 @@ tier1Events = {
 				end, SPAWN_TYPE.ANY, 0, ENT_TYPE.FX_EXPLOSION)
 
 				cb_explosion_id = -1
-			end, 15*60)
+			end, 60*60)
 	end },
 	-- 2
 	{"PUNISHMENT", "Kali punishes you with a ball and chain!", function()
@@ -281,7 +281,7 @@ tier1Events = {
 	{"TEMPLE", "I hope you like temple levels!", function()
 		
 		local floors = get_entities_by(0, MASK.FLOOR | MASK.ACTIVEFLOOR, LAYER.FRONT)
-		local floorsToChange = math.min(#floors, 25)
+		local floorsToChange = math.min(#floors, 30)
 
 		while floorsToChange > 0 do
 			local floor = floors[math.random(1, #floors)]
@@ -396,7 +396,7 @@ tier1Events = {
 	-- 23
 	{"LAVA", "Lava pool incoming!", function()
 		local x, y, l = get_position(players[1].uid)
-		local lava_left = 16
+		local lava_left = 20
 		
 		-- give one second before all hell breaks loose
 		set_timeout(function()
@@ -413,7 +413,7 @@ tier1Events = {
 	-- 24
 	{"WATER", "Who doesn't like water levels?", function()
 		local x, y, l = get_position(players[1].uid)
-		local water_left = 50
+		local water_left = 40
 		
 		-- give one second before all hell breaks loose
 		set_timeout(function()
@@ -488,12 +488,14 @@ tier1Events = {
 			local uid = spawn_entity(ENT_TYPE.ITEM_WEBSHOT, x, y, l, 0, 0)
 			local ent = get_entity(uid)
 			ent.user_data = { whip = true }
-			players[1]:pick_up(ent) 
+			players[1]:pick_up(ent)
+			local xVelocity = math.random(30, 50)
+			local yVelocity = math.random(50, 80)/1000
 
 			if (facingleft == 1) then
-				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x-.53, y, l, 50*facingleft, .08)
+				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x-.5, y, l, xVelocity*facingleft, yVelocity)
 			else
-				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x+.53, y, l, 50*facingleft, .08)
+				spawn_entity(ENT_TYPE.ITEM_GIANTSPIDER_WEBSHOT, x+.5, y, l, xVelocity*facingleft, yVelocity)
 			end
 		end, SPAWN_TYPE.ANY, MASK.ITEM, ENT_TYPE.ITEM_WHIP)
 
@@ -639,7 +641,7 @@ function module.parse_chat(NAME, MSG)
 			return
 		end
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[32]
+		-- event = tier1Events[28]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
