@@ -572,7 +572,31 @@ tier1Events = {
 				end
 			end
 		end, ON.GAMEFRAME)
+	end},
+	-- 31
+	{"TELEPORTATION", "Warning! Teleporting randomly in one second...", function()
+		local x, y, l = get_position(players[1].uid)
+
+		-- wait one second before all hell breaks loose
+		set_timeout(function()
+			local direction = math.random(1,4)
+			local distance = math.random(2,8)
+		
+			if direction == 1 then
+				move_entity(players[1].uid, x+distance, y, 0, 0)
+			elseif direction == 2 then
+				move_entity(players[1].uid, x-distance, y, 0, 0)
+			elseif direction == 3 then
+				move_entity(players[1].uid, x, y+distance, 0, 0)
+			else
+				move_entity(players[1].uid, x, y-distance, 0, 0)
+			end
+
+			local sound = get_sound(VANILLA_SOUND.SHARED_TELEPORT)
+			if sound ~= nil then sound:play() end
+		end, 60)
 	end}
+	-- 30
 	-- doesn't work sadge
 	-- {"AMOGUS", "Someone is sus!", function()
 	-- 	local x, y, l = get_position(players[1].uid)
@@ -603,7 +627,7 @@ function module.parse_chat(NAME, MSG)
 			return
 		end
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[30]
+		-- event = tier1Events[31]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
