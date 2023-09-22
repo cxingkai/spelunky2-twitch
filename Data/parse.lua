@@ -595,6 +595,18 @@ tier1Events = {
 			local sound = get_sound(VANILLA_SOUND.SHARED_TELEPORT)
 			if sound ~= nil then sound:play() end
 		end, 60)
+	end},
+	-- 32
+	{"CLOWDER", "Who doesn't like cats?", function()
+		local x, y, l = get_position(players[1].uid)
+
+		-- wait half a second before all hell breaks loose
+		set_timeout(function()
+			spawn(ENT_TYPE.MONS_CATMUMMY, x+1, y, l, 0, 0)
+			spawn(ENT_TYPE.MONS_CATMUMMY, x-1, y, l, 0, 0)
+			spawn(ENT_TYPE.MONS_CATMUMMY, x, y, l, 0, 0)
+			spawn(ENT_TYPE.MONS_CATMUMMY, x, y+1, l, 0, 0)
+		end, 30)
 	end}
 	-- 30
 	-- doesn't work sadge
@@ -627,7 +639,7 @@ function module.parse_chat(NAME, MSG)
 			return
 		end
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[31]
+		-- event = tier1Events[32]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
