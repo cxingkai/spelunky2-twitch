@@ -611,7 +611,7 @@ tier1Events = {
 		end, 30)
 	end},
 	-- 33
-	{"Jail", "Jail appearing in one second! Escape or get crushed!", function()
+	{"Wall", "Crush blocks appearing in one second! Escape or get crushed!", function()
 		-- this is extremely sadistic and probably needs some balancing
 		-- wait a second before all hell breaks loose
 		set_timeout(function()
