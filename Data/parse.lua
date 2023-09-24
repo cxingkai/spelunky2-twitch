@@ -609,6 +609,24 @@ tier1Events = {
 			spawn(ENT_TYPE.MONS_CATMUMMY, x, y, l, 0, 0)
 			spawn(ENT_TYPE.MONS_CATMUMMY, x, y+1, l, 0, 0)
 		end, 30)
+	end},
+	-- 33
+	{"Jail", "Jail appearing in one second! Escape or get crushed!", function()
+		-- this is extremely sadistic and probably needs some balancing
+		-- wait a second before all hell breaks loose
+		set_timeout(function()
+			local x, y, l = get_position(players[1].uid)
+
+			fx = math.floor(x)
+			fy = math.floor(y)
+	
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx-2, fy, l, 0, 0)
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx-2, fy+1, l, 0, 0)
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx-2, fy+2, l, 0, 0)
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx+2, fy, l, 0, 0)
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx+2, fy+1, l, 0, 0)
+			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx+2, fy+2, l, 0, 0)
+		end, 60)
 	end}
 	-- 30
 	-- doesn't work sadge
@@ -641,7 +659,7 @@ function module.parse_chat(NAME, MSG)
 			return
 		end
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[28]
+		-- event = tier1Events[33]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
