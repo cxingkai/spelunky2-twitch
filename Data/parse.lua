@@ -672,12 +672,32 @@ tier1Events = {
 		end
 	end},
 	-- 35
-	{"MORSHU", "Free turkey... and Yang!", function()
+	{"MORSHU", "Lamp oil? Rope? Bombs? You want it? Come back when you're a little MMMM... richer!", function()
 		local x, y, l = get_position(players[1].uid)
 
-		spawn_roomowner(ENT_TYPE.MONS_YANG, x, y, l, ROOM_TEMPLATE.SHOP)
-		spawn_on_floor(ENT_TYPE.ITEM_PICKUP_COOKEDTURKEY, x-1, y, l)
-	end},
+		local morshu = spawn_roomowner(ENT_TYPE.MONS_YANG, x, y, l, ROOM_TEMPLATE.SHOP)
+
+		local box = spawn_on_floor(ENT_TYPE.ITEM_PICKUP_BOMBBOX, x-1, y, l)
+		add_item_to_shop(box, morshu)
+		local box_ent = get_entity(box)
+		box_ent.price = 15000
+
+		local ropes = spawn_on_floor(ENT_TYPE.ITEM_PICKUP_ROPEPILE, x-2, y, l)
+		add_item_to_shop(ropes, morshu)
+		local ropes_ent = get_entity(ropes)
+		ropes_ent.price = 3750
+
+		local lamp = spawn_on_floor(ENT_TYPE.ITEM_LAMP, x+1, y, l)
+		add_item_to_shop(lamp, morshu)
+		local lamp_ent = get_entity(lamp)
+		-- lamp is not purchasable so we set an absurdly high price. well, oil prices are insane these days
+		lamp_ent.price = 999999
+
+		local present = spawn_on_floor(ENT_TYPE.ITEM_PRESENT, x-3, y, l)
+		add_item_to_shop(present, morshu)
+		local present_ent = get_entity(present)
+		present_ent.price = 12000
+	end}
 	-- 30
 	-- doesn't work sadge
 	-- {"AMOGUS", "Someone is sus!", function()
