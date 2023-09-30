@@ -611,7 +611,7 @@ tier1Events = {
 		end, 30)
 	end},
 	-- 33
-	{"Wall", "Crush blocks appearing in one second! Escape or get crushed!", function()
+	{"WALL", "Crush blocks appearing in one second! Escape or get crushed!", function()
 		-- this is extremely sadistic and probably needs some balancing
 		-- wait a second before all hell breaks loose
 		set_timeout(function()
@@ -627,7 +627,57 @@ tier1Events = {
 			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx+2, fy+1, l, 0, 0)
 			spawn(ENT_TYPE.ACTIVEFLOOR_CRUSH_TRAP, fx+2, fy+2, l, 0, 0)
 		end, 60)
-	end}
+	end},
+	-- 34
+	{"RESOURCE", "Resources will be randomized!", function()
+		local player = get_player(1, false)
+
+		local healthBucketRand = rand(100)
+		if healthBucketRand <= 50 then
+			player.health = rand(20)
+		elseif healthBucketRand <= 75 then
+			player.health = rand(20) + 20
+		elseif healthBucketRand <= 87 then
+			player.health = rand(20) + 40
+		elseif healthBucketRand <= 94 then
+			player.health = rand(20) + 60
+		else
+			player.health = math.min(rand(20) + 80, 99)
+		end
+
+		local bombsBucketRand = rand(100)
+		if bombsBucketRand <= 50 then
+			player.inventory.bombs = rand(20) - 1
+		elseif bombsBucketRand <= 75 then
+			player.inventory.bombs = rand(20) + 19
+		elseif bombsBucketRand <= 87 then
+			player.inventory.bombs = rand(20) + 39
+		elseif bombsBucketRand <= 94 then
+			player.inventory.bombs = rand(20) + 59
+		else
+			player.inventory.bombs = rand(20) + 79
+		end
+
+		local ropesBucketRand = rand(100)
+		if ropesBucketRand <= 50 then
+			player.inventory.ropes = rand(20) - 1
+		elseif ropesBucketRand <= 75 then
+			player.inventory.ropes = rand(20) + 19
+		elseif ropesBucketRand <= 87 then
+			player.inventory.ropes = rand(20) + 39
+		elseif ropesBucketRand <= 94 then
+			player.inventory.ropes = rand(20) + 59
+		else
+			player.inventory.ropes = rand(20) + 79
+		end
+	end},
+	-- 35
+	{"MORSHU", "Free turkey... and Yang!", function()
+		local x, y, l = get_position(players[1].uid)
+
+		spawn_roomowner(ENT_TYPE.MONS_YANG, x, y, l, ROOM_TEMPLATE.SHOP)
+		spawn_on_floor(ENT_TYPE.ITEM_PICKUP_COOKEDTURKEY, x-1, y, l)
+	end},
 	-- 30
 	-- doesn't work sadge
 	-- {"AMOGUS", "Someone is sus!", function()
@@ -659,7 +709,7 @@ function module.parse_chat(NAME, MSG)
 			return
 		end
 		local event = tier1Events[rand(#tier1Events)]
-		-- event = tier1Events[33]
+		-- event = tier1Events[35]
 		announcementText = NAME .. " has rolled " .. event[1] .. "! " .. event[2]
 		event[3]()
 
