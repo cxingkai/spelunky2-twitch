@@ -377,21 +377,47 @@ tier1Events = {
 	end},
 	-- 22
 	{"SQUID GAMES", "The cosmic jelly has been summoned!", function()
-		local sound = get_sound(VANILLA_SOUND.SHARED_COSMIC_ORB_DESTROY)
-		if sound ~= nil then sound:play() end
-		
-		local x, y, l = get_position(players[1].uid)
-		local direction = math.random(1,4)
-		
-		if direction == 1 then
-			spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x+20, y, l, 0, 0)
-		elseif direction == 2 then
-			spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x-20, y, l, 0, 0)
-		elseif direction == 3 then
-			spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x, y+20, l, 0, 0)
-		else
-			spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x, y-20, l, 0, 0)
+		function summonSquid(x, y)
+			local sound = get_sound(VANILLA_SOUND.SHARED_COSMIC_ORB_DESTROY)
+			if sound ~= nil then sound:play() end
+	
+			local direction = rand(4)
+			
+			if direction == 1 then
+				spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x+20, y, 0, 0, 0)
+			elseif direction == 2 then
+				spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x-20, y, 0, 0, 0)
+			elseif direction == 3 then
+				spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x, y+20, 0, 0, 0)
+			else
+				spawn(ENT_TYPE.MONS_MEGAJELLYFISH, x, y-20, 0, 0, 0)
+			end
 		end
+
+		local prevX, prevY, prevLayer = get_position(players[1].uid)
+		
+		if prevLayer == 0 then
+			summonSquid(prevX, prevY)
+		end
+
+		local squidCb = set_callback(function()
+			if players[1] then
+				local newX, newY, newLayer = get_position(players[1].uid)
+				if prevLayer == 1 and newLayer == 0 then
+					summonSquid(newX, newY)
+				end
+				prevLayer = newLayer
+			else
+				clear_callback()
+			end
+		end, ON.FRAME)
+
+		set_callback(function()
+			if squidCb then
+				clear_callback(squidCb)
+			end
+			clear_callback()
+		end, ON.LEVEL)
 	end},
 	-- 23
 	{"LAVA", "Lava pool incoming!", function()
